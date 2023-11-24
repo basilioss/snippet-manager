@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetManager.Server", "Server\SnippetManager.Server.csproj", "{91623B0B-06A4-4D6B-85C9-5EAB1252EF3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippetManager.Server", "Server\SnippetManager.Server.csproj", "{91623B0B-06A4-4D6B-85C9-5EAB1252EF3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetManager.Client", "Client\SnippetManager.Client.csproj", "{390D1CE8-C8AF-4673-8B85-E1CCB7E6B712}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippetManager.Client", "Client\SnippetManager.Client.csproj", "{390D1CE8-C8AF-4673-8B85-E1CCB7E6B712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetManager.Shared", "Shared\SnippetManager.Shared.csproj", "{58179D27-E677-41CC-961D-441A3CC6B238}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippetManager.Shared", "Shared\SnippetManager.Shared.csproj", "{58179D27-E677-41CC-961D-441A3CC6B238}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
