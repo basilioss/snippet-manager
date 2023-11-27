@@ -1,0 +1,66 @@
+﻿@page "/snippet"
+@page "/snippet/{id:int}"
+@inject ISnippetService SnippetService
+@inject NavigationManager NavigationManager
+
+<EditForm Model="snippet" OnSubmit="HandleSubmit">
+    <div>
+        <label for="title">Title</label>
+        <InputText id="title" @bind-Value="snippet.Title" class="form-control" />
+    </div>
+    <br/>
+    <div>
+        <label for="body">Body</label>
+        <InputTextArea id="body" @bind-Value="snippet.Body" class="form-control" rows="10" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">@btnText</button>
+    <button type="button" class="btn btn-danger"
+    @onclick="DeleteSnippet">
+        Delete Snippet
+    </button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    string btnText = string.Empty;
+
+    SnippetManager.Shared.Snippet snippet =
+        new SnippetManager.Shared.Snippet { Title = "New Snippet" };
+
+    protected override void OnInitialized()
+    {
+        btnText = Id == null ? "Save New Snippet" : "Update Snippet";
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null)
+        {
+            var result = await SnippetService.GetSnippetById((int)Id);
+            if (result is not null)
+                snippet = result;
+            else
+                NavigationManager.NavigateTo("/snippet");
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        if (Id is null)
+        {
+            await SnippetService.CreateSnippet(snippet);
+        }
+        else
+        {
+            await SnippetService.UpdateSnippet((int)Id, snippet);
+        }
+    }
+
+    async Task DeleteSnippet()
+    {
+        await SnippetService.DeleteSnippet(snippet.Id);
+    }
+}

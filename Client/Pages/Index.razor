@@ -1,9 +1,46 @@
 ﻿@page "/"
+@inject ISnippetService SnippetService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Index</PageTitle>
 
 <h1>Snippets</h1>
+<br />
 
-Welcome to your new app.
+<table class="table">
+    <tbody>
+        @foreach (var snippet in SnippetService.Snippets)
+        {
+            <tr>
+                <td>@snippet.Title</td>
+                <td style="text-align: right;">
+                    <button class="btn btn-primary"
+                    @onclick="(() => ShowSnippet(snippet.Id))">
+                        <i class="oi oi-pencil"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<button class="btn btn-primary" @onclick="CreateNewSnippet">
+    Create New Snippet
+</button>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await SnippetService.GetSnippets();
+    }
+
+    void ShowSnippet(int id)
+    {
+        NavigationManager.NavigateTo($"snippet/{id}");
+    }
+
+    void CreateNewSnippet()
+    {
+        NavigationManager.NavigateTo("/snippet");
+    }
+}

@@ -29,7 +29,7 @@ builder.Services.AddIdentityServer()
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddIdentityServerJwt()
+    //.AddIdentityServerJwt()
     .AddGoogle(googleOptions =>
     {
         googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
@@ -51,6 +51,7 @@ builder.Services
     });
 
 builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddScoped<ISnippetService, SnippetService>();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
