@@ -1,9 +1,9 @@
 ﻿using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SnippetManager.Server.Models;
-using SnippetManager.Shared;
 
 namespace SnippetManager.Server.Data
 {
@@ -17,6 +17,34 @@ namespace SnippetManager.Server.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            string userId1 = Guid.NewGuid().ToString();
+            string userId2 = Guid.NewGuid().ToString();
+
+            var user1 = new ApplicationUser
+            {
+                Id = userId1,
+                UserName = "user@gmail.com",
+                Email = "user@gmail.com",
+                EmailConfirmed = true,
+                NormalizedEmail = "user@gmail.com".ToUpper(),
+                NormalizedUserName = "user@gmail.com".ToUpper()
+            };
+            var user2 = new ApplicationUser
+            {
+                Id = userId2,
+                UserName = "user2@gmail.com",
+                Email = "user2@gmail.com",
+                EmailConfirmed = true,
+                NormalizedEmail = "user2@gmail.com".ToUpper(),
+                NormalizedUserName = "user2@gmail.com".ToUpper()
+            };
+
+            PasswordHasher<ApplicationUser> hasher = new PasswordHasher<ApplicationUser>();
+            user1.PasswordHash = hasher.HashPassword(user1, "user$Pass1");
+            user2.PasswordHash = hasher.HashPassword(user2, "user$Pass2");
+            modelBuilder.Entity<ApplicationUser>().HasData(user1, user2);
+
             modelBuilder.Entity<Snippet>().HasData(
                     new Snippet
                     {
@@ -24,7 +52,8 @@ namespace SnippetManager.Server.Data
                         Title = "Hex to RGB in Python",
                         Body = "def hex_to_rgb(hex):\n" +
                             "  return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))\n\n" +
-                            "hex_to_rgb('FFA501') # (255, 165, 1)"
+                            "hex_to_rgb('FFA501') # (255, 165, 1)",
+                        ApplicationUserId = userId1,
                     },
                     new Snippet
                     {
@@ -34,7 +63,8 @@ namespace SnippetManager.Server.Data
                             "def words(s, pattern = '[a-zA-Z-]+'):\n" +
                             "  return re.findall(pattern, s)\nn" +
                             "words('I love Python!!') # ['I', 'like', 'Python']" +
-                            "words('python, javaScript & coffee') # ['python', 'javaScript', 'coffee']"
+                            "words('python, javaScript & coffee') # ['python', 'javaScript', 'coffee']",
+                        ApplicationUserId = userId1,
                     },
                     new Snippet
                     {
@@ -52,7 +82,8 @@ namespace SnippetManager.Server.Data
                             "        '\"': '&quot;'\n" +
                             "      }[tag] || tag)\n" +
                             "  );\n\n" +
-                            "escapeHTML('<a href=\"#\">Me & you</a>');"
+                            "escapeHTML('<a href=\"#\">Me & you</a>');",
+                        ApplicationUserId = userId2,
                     },
                     new Snippet
                     {
@@ -65,7 +96,8 @@ namespace SnippetManager.Server.Data
                             "    .map(x => x.toLowerCase())\n" +
                             "    .join('_');\n\n" +
                             "toSnakeCase('camelCase'); // 'camel_case'\n" +
-                            "toSnakeCase('some text'); // 'some_text'\n"
+                            "toSnakeCase('some text'); // 'some_text'\n",
+                        ApplicationUserId = userId2,
                     });
 
         }

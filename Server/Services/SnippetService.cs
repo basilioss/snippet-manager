@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SnippetManager.Server.Interfaces;
 using SnippetManager.Server.Data;
-using SnippetManager.Shared;
 using SnippetManager.Client.Pages;
-using Snippet = SnippetManager.Shared.Snippet;
+using Snippet = SnippetManager.Server.Models.Snippet;
 
 namespace SnippetManager.Server.Services
 {

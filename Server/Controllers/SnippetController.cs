@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SnippetManager.Server.Interfaces;
-using SnippetManager.Shared;
+using SnippetManager.Server.Models;
 
 namespace SnippetManager.Server.Controllers
 {

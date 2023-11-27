@@ -1,4 +1,4 @@
-﻿using SnippetManager.Shared;
+﻿using SnippetManager.Server.Models;
 
 namespace SnippetManager.Server.Interfaces
 {

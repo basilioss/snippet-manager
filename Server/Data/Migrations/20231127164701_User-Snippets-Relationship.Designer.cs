@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SnippetManager.Server.Data;
 
@@ -11,9 +12,11 @@ using SnippetManager.Server.Data;
 namespace SnippetManager.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231127164701_User-Snippets-Relationship")]
+    partial class UserSnippetsRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -363,40 +366,6 @@ namespace SnippetManager.Server.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "e95cccfc-bba3-4c6d-a178-00126c708180",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "7f3f18e7-bddb-4de7-a2e3-a9f879c2e118",
-                            Email = "user@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "USER@GMAIL.COM",
-                            NormalizedUserName = "USER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEON9uHdH4ZX723bokDIP5JoADzWIO1uBWyJumK7FcwwJOqw/UcacHLMxFsCITWx0Hg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "924922eb-386b-42df-874c-e198f89f24ad",
-                            TwoFactorEnabled = false,
-                            UserName = "user@gmail.com"
-                        },
-                        new
-                        {
-                            Id = "a3bc0091-a85a-4c7f-8cfd-1a970ddc27f6",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "4d9e0d4c-9a23-4e63-a491-91ccc7b95250",
-                            Email = "user2@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "USER2@GMAIL.COM",
-                            NormalizedUserName = "USER2@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDfSobOdL5zmZ+mbHiRYMGOPOXTpDKnGzfuNgo/XsZA4jYNpi2bKL3NpVPyfmo0RIw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "43f899bd-2967-4757-9f1e-40a7a04e91c9",
-                            TwoFactorEnabled = false,
-                            UserName = "user2@gmail.com"
-                        });
                 });
 
             modelBuilder.Entity("SnippetManager.Server.Models.Snippet", b =>
@@ -408,7 +377,6 @@ namespace SnippetManager.Server.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApplicationUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Body")
@@ -427,28 +395,24 @@ namespace SnippetManager.Server.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ApplicationUserId = "e95cccfc-bba3-4c6d-a178-00126c708180",
                             Body = "def hex_to_rgb(hex):\n  return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))\n\nhex_to_rgb('FFA501') # (255, 165, 1)",
                             Title = "Hex to RGB in Python"
                         },
                         new
                         {
                             Id = 2,
-                            ApplicationUserId = "e95cccfc-bba3-4c6d-a178-00126c708180",
                             Body = "import re\n\ndef words(s, pattern = '[a-zA-Z-]+'):\n  return re.findall(pattern, s)\nnwords('I love Python!!') # ['I', 'like', 'Python']words('python, javaScript & coffee') # ['python', 'javaScript', 'coffee']",
                             Title = "String to words in Python"
                         },
                         new
                         {
                             Id = 3,
-                            ApplicationUserId = "a3bc0091-a85a-4c7f-8cfd-1a970ddc27f6",
                             Body = "const escapeHTML = str =>\n  str.replace(\n    /[&<>'\"]/g,\n    tag =>\n      ({\n        '&': '&amp;',\n        '<': '&lt;',\n        '>': '&gt;',\n        \"'\": '&#39;',\n        '\"': '&quot;'\n      }[tag] || tag)\n  );\n\nescapeHTML('<a href=\"#\">Me & you</a>');",
                             Title = "Escape HTML in JS"
                         },
                         new
                         {
                             Id = 4,
-                            ApplicationUserId = "a3bc0091-a85a-4c7f-8cfd-1a970ddc27f6",
                             Body = "const toSnakeCase = str =>\n  str &&\n  str\n    .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)\n    .map(x => x.toLowerCase())\n    .join('_');\n\ntoSnakeCase('camelCase'); // 'camel_case'\ntoSnakeCase('some text'); // 'some_text'\n",
                             Title = "Snakecase string in JS"
                         });
@@ -509,9 +473,7 @@ namespace SnippetManager.Server.Data.Migrations
                 {
                     b.HasOne("SnippetManager.Server.Models.ApplicationUser", null)
                         .WithMany("Snippets")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("SnippetManager.Server.Models.ApplicationUser", b =>
