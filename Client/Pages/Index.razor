@@ -5,8 +5,18 @@
 @attribute [Authorize]
 
 <PageTitle>Home</PageTitle>
-<!-- <div style="padding: 50px;">  Adjust the value of '10px' as needed -->
+
 <div style="padding: 50px; display: flex; flex-direction: column; align-items: center;">
+    <div style="display: flex; align-items: center; width: 70%; margin-bottom: 30px;">
+        <input type="text" placeholder="Search..." class="form-control mb-3" @bind="searchString" @onkeyup="HandleKeyPress" />
+        <button class="btn btn-primary" style="align-self: flex-start; margin-left: 5px;" @onclick="Search">
+            <i class="oi oi-magnifying-glass"></i>
+        </button>
+        <button class="btn btn-primary" style="align-self: flex-start; margin-left: 5px;" @onclick="CreateNewSnippet">
+            <i class="oi oi-plus"></i>
+        </button>
+    </div>
+    
     <table class="table">
         <tbody>
             @foreach (var snippet in SnippetService.Snippets)
@@ -28,15 +38,29 @@
         </tbody>
     </table>
 
-    <button class="btn btn-primary" @onclick="CreateNewSnippet">
-        Create New Snippet
-    </button>
+
 </div>
 
 @code {
     protected override async Task OnInitializedAsync()
     {
         await SnippetService.GetSnippets();
+    }
+
+    private void HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            Search();
+        }
+    }
+
+    private string searchString = "";
+
+    async void Search()
+    {
+        await SnippetService.SearchSnippets(searchString);
+        StateHasChanged(); // Trigger a re-render of the component
     }
 
     void EditSnippet(int id)

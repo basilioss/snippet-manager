@@ -33,6 +33,12 @@ namespace SnippetManager.Server.Controllers
             return await _snippetService.GetSnippetById(id);
         }
 
+        [HttpGet("search")]
+        public async Task<List<Snippet>> SearchSnippets(string? searchString)
+        {
+            return await _snippetService.SearchSnippets(GetUserId(User), searchString);
+        }
+
         [HttpPost]
         public async Task<Snippet?> CreateSnippet(SnippetDto createSnippetDto)
         {

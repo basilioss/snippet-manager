@@ -28,6 +28,18 @@ namespace SnippetManager.Server.Services
             var dbSnippet = await _context.Snippets.FindAsync(snippetId);
             return dbSnippet;
         }
+        public async Task<List<Snippet>> SearchSnippets(string userId, string? searchString)
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                return await GetSnippets(userId);
+            }
+
+            return await _context.Snippets
+                .Where(snippet => snippet.ApplicationUserId == userId)
+                .Where(snippet => snippet.Title.ToLower().Contains(searchString.ToLower()))
+                .ToListAsync();
+        }
 
         public async Task<Snippet> CreateSnippet(string userId, SnippetDto snippetDto)
         {

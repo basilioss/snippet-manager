@@ -31,6 +31,12 @@ namespace SnippetManager.Client.Services
             }
             return null;
         }
+        public async Task SearchSnippets(string searchString)
+        {
+            var result = await _http.GetFromJsonAsync<List<Snippet>>($"api/snippet/search?searchString={searchString}");
+            if (result is not null)
+                Snippets = result;
+        }
 
         public async Task CreateSnippet(Snippet snippet)
         {
