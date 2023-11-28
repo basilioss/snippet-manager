@@ -1,13 +1,14 @@
 ﻿using SnippetManager.Server.Models;
+using SnippetManager.Server.DTOs;
 
 namespace SnippetManager.Server.Interfaces
 {
     public interface ISnippetService
     {
-        Task<List<Snippet>> GetSnippets();
+        Task<List<Snippet>> GetSnippets(string userId);
         Task<Snippet?> GetSnippetById(int productId);
-        Task<Snippet> CreateSnippet(Snippet snippet);
-        Task<Snippet?> UpdateSnippet(int snippetId, Snippet snippet);
+        Task<Snippet> CreateSnippet(string userId, SnippetDto createSnippetDto);
+        Task<Snippet?> UpdateSnippet(int snippetId, SnippetDto updateSnippetDto);
         Task<bool> DeleteSnippet(int snippetId);
     }
 }

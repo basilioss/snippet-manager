@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace IT_Community.Server
+namespace SnippetManager.Server
 {
     public class ExceptionMiddleware
     {

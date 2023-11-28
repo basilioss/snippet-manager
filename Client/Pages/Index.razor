@@ -1,32 +1,37 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Authorization;
 @inject ISnippetService SnippetService
 @inject NavigationManager NavigationManager
+@attribute [Authorize]
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
+<!-- <div style="padding: 50px;">  Adjust the value of '10px' as needed -->
+<div style="padding: 50px; display: flex; flex-direction: column; align-items: center;">
+    <table class="table">
+        <tbody>
+            @foreach (var snippet in SnippetService.Snippets)
+            {
+                <tr>
+                    <td>@snippet.Title</td>
+                    <td style="text-align: right;" class="text-right">
+                        <button class="btn btn-primary" @onclick="(() => EditSnippet(snippet.Id))">
+                            <i class="oi oi-pencil"></i>
+                        </button>
+                        <span class="ml-2">
+                            <button class="btn btn-danger" @onclick="(() => DeleteSnippet(snippet.Id))">
+                                <i class="oi oi-trash"></i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<h1>Snippets</h1>
-<br />
-
-<table class="table">
-    <tbody>
-        @foreach (var snippet in SnippetService.Snippets)
-        {
-            <tr>
-                <td>@snippet.Title</td>
-                <td style="text-align: right;">
-                    <button class="btn btn-primary"
-                    @onclick="(() => ShowSnippet(snippet.Id))">
-                        <i class="oi oi-pencil"></i>
-                    </button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<button class="btn btn-primary" @onclick="CreateNewSnippet">
-    Create New Snippet
-</button>
+    <button class="btn btn-primary" @onclick="CreateNewSnippet">
+        Create New Snippet
+    </button>
+</div>
 
 @code {
     protected override async Task OnInitializedAsync()
@@ -34,9 +39,16 @@
         await SnippetService.GetSnippets();
     }
 
-    void ShowSnippet(int id)
+    void EditSnippet(int id)
     {
         NavigationManager.NavigateTo($"snippet/{id}");
+    }
+
+    async void DeleteSnippet(int id)
+    {
+        await SnippetService.DeleteSnippet(id);
+        await SnippetService.GetSnippets();
+        StateHasChanged(); // Trigger a re-render of the component
     }
 
     void CreateNewSnippet()

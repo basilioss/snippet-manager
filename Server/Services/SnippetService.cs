@@ -1,22 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SnippetManager.Server.Interfaces;
 using SnippetManager.Server.Data;
-using SnippetManager.Client.Pages;
 using Snippet = SnippetManager.Server.Models.Snippet;
+using AutoMapper;
+using SnippetManager.Server.DTOs;
 
 namespace SnippetManager.Server.Services
 {
     public class SnippetService : ISnippetService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public SnippetService(ApplicationDbContext context)
+        public SnippetService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-        public async Task<List<Snippet>> GetSnippets()
+        public async Task<List<Snippet>> GetSnippets(string userId)
         {
-            return await _context.Snippets.ToListAsync();
+            return await _context.Snippets
+                .Where(snippet => snippet.ApplicationUserId == userId)
+                .ToListAsync();
         }
 
         public async Task<Snippet?> GetSnippetById(int snippetId)
@@ -25,20 +30,23 @@ namespace SnippetManager.Server.Services
             return dbSnippet;
         }
 
-        public async Task<Snippet> CreateSnippet(Snippet snippet)
+        public async Task<Snippet> CreateSnippet(string userId, SnippetDto snippetDto)
         {
+            var snippet = _mapper.Map<SnippetDto, Snippet>(snippetDto);
+            snippet.ApplicationUserId = userId;
+
             _context.Add(snippet);
             await _context.SaveChangesAsync();
+
             return snippet;
         }
 
-        public async Task<Snippet?> UpdateSnippet(int snippetId, Snippet snippet)
+        public async Task<Snippet?> UpdateSnippet(int snippetId, SnippetDto snippetDto)
         {
             var dbSnippet = await _context.Snippets.FindAsync(snippetId);
             if (dbSnippet != null)
             {
-                dbSnippet.Title = snippet.Title;
-                dbSnippet.Body = snippet.Body;
+                _mapper.Map(snippetDto, dbSnippet);
 
                 await _context.SaveChangesAsync();
             }

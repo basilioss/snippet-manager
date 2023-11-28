@@ -1,24 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SnippetManager.Server.Interfaces;
 using SnippetManager.Server.Models;
+using System.Security.Claims;
+using SnippetManager.Server.DTOs;
+using System.Security.Principal;
 
 namespace SnippetManager.Server.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SnippetController : ControllerBase
     {
         private readonly ISnippetService _snippetService;
 
-        public SnippetController(ISnippetService productService)
+        public SnippetController(ISnippetService snippetService)
         {
-            _snippetService = productService;
+            _snippetService = snippetService;
         }
 
         [HttpGet]
         public async Task<List<Snippet>> GetSnippets()
         {
-            return await _snippetService.GetSnippets();
+            return await _snippetService.GetSnippets(GetUserId(User));
         }
 
         [HttpGet("{id}")]
@@ -28,21 +34,26 @@ namespace SnippetManager.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<Snippet?> CreateProduct(Snippet snippet)
+        public async Task<Snippet?> CreateSnippet(SnippetDto createSnippetDto)
         {
-            return await _snippetService.CreateSnippet(snippet);
+            return await _snippetService.CreateSnippet(GetUserId(User), createSnippetDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<Snippet?> UpdateProduct(int id, Snippet snippet)
+        public async Task<Snippet?> UpdateSnippet(int id, SnippetDto snippet)
         {
             return await _snippetService.UpdateSnippet(id, snippet);
         }
 
         [HttpDelete("{id}")]
-        public async Task<bool> DeleteProduct(int id)
+        public async Task<bool> DeleteSnippet(int id)
         {
             return await _snippetService.DeleteSnippet(id);
+        }
+        private string GetUserId(IPrincipal user)
+        {
+            var userIdClaim = (user.Identity as ClaimsIdentity)?.FindFirst(ClaimTypes.NameIdentifier);
+            return userIdClaim?.Value;
         }
     }
 }
