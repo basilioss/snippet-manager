@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SnippetManager.Server.Interfaces;
 using SnippetManager.Server.Models;
 using System.Security.Claims;
 using SnippetManager.Server.DTOs;
 using System.Security.Principal;
+using SnippetManager.Server.Services;
 
 namespace SnippetManager.Server.Controllers
 {

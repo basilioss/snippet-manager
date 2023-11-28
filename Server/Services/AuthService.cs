@@ -1,16 +1,12 @@
-﻿using Duende.IdentityServer.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using SnippetManager.Server.Models;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Mail;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
 using SnippetManager.Server.Exceptions;
-using System.Security.Authentication;
 using SnippetManager.Server.Resources;
-using SnippetManager.Server.Interfaces;
 
 namespace SnippetManager.Server.Services
 {

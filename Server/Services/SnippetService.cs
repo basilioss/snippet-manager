@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SnippetManager.Server.Interfaces;
 using SnippetManager.Server.Data;
 using Snippet = SnippetManager.Server.Models.Snippet;
 using AutoMapper;

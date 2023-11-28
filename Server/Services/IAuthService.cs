@@ -1,6 +1,6 @@
 ﻿using SnippetManager.Server.Models;
 
-namespace SnippetManager.Server.Interfaces
+namespace SnippetManager.Server.Services
 {
     public interface IAuthService
     {

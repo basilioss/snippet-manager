@@ -9,7 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SnippetManager.Server;
 using SnippetManager.Server.Data;
-using SnippetManager.Server.Interfaces;
 using SnippetManager.Server.Models;
 using SnippetManager.Server.Services;
 using System.Text;

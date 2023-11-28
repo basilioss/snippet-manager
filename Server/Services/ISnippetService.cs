@@ -1,7 +1,7 @@
 ﻿using SnippetManager.Server.Models;
 using SnippetManager.Server.DTOs;
 
-namespace SnippetManager.Server.Interfaces
+namespace SnippetManager.Server.Services
 {
     public interface ISnippetService
     {
