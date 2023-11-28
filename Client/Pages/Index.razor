@@ -26,8 +26,8 @@
                     <td>@snippet.Title</td>
                     <td style="text-align: right;" class="text-right">
                         <span class="ml-2">
-                            <button class="btn btn-dark" @onclick="(() => CopyToClipboard(snippet.Body))">
-                                <i class="oi oi-document"></i>
+                            <button class="btn btn-dark" @onclick="(() => CopyToClipboard(snippet.Id, snippet.Body))">
+                                <i id="@($"copy-icon-{snippet.Id}")" class="oi oi-document"></i>
                             </button>
                         </span>
                         <span class="ml-2">
@@ -45,8 +45,6 @@
             }
         </tbody>
     </table>
-
-
 </div>
 
 @code {
@@ -80,7 +78,7 @@
     {
         await SnippetService.DeleteSnippet(id);
         await SnippetService.GetSnippets();
-        StateHasChanged(); // Trigger a re-render of the component
+        StateHasChanged();
     }
 
     void CreateNewSnippet()
@@ -88,8 +86,9 @@
         NavigationManager.NavigateTo("/snippet");
     }
 
-    async Task CopyToClipboard(string text)
+    async Task CopyToClipboard(int snippetId, string snippetBody)
     {
-        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
+        await JSRuntime.InvokeVoidAsync("changeCopyIconTemporary", snippetId);
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", snippetBody);
     }
 }
