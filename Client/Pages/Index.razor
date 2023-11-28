@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Authorization;
+@inject IJSRuntime JSRuntime
 @inject ISnippetService SnippetService
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
@@ -24,9 +25,16 @@
                 <tr>
                     <td>@snippet.Title</td>
                     <td style="text-align: right;" class="text-right">
-                        <button class="btn btn-primary" @onclick="(() => EditSnippet(snippet.Id))">
-                            <i class="oi oi-pencil"></i>
-                        </button>
+                        <span class="ml-2">
+                            <button class="btn btn-dark" @onclick="(() => CopyToClipboard(snippet.Body))">
+                                <i class="oi oi-document"></i>
+                            </button>
+                        </span>
+                        <span class="ml-2">
+                            <button class="btn btn-primary" @onclick="(() => EditSnippet(snippet.Id))">
+                                <i class="oi oi-pencil"></i>
+                            </button>
+                        </span>
                         <span class="ml-2">
                             <button class="btn btn-danger" @onclick="(() => DeleteSnippet(snippet.Id))">
                                 <i class="oi oi-trash"></i>
@@ -78,5 +86,10 @@
     void CreateNewSnippet()
     {
         NavigationManager.NavigateTo("/snippet");
+    }
+
+    async Task CopyToClipboard(string text)
+    {
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
     }
 }
