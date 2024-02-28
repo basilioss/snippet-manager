@@ -8,8 +8,7 @@
         <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/register">Register</a>
-        <a href="authentication/login">Log in</a>
+        <button class="nav-link btn btn-link" @onclick="BeginLogIn">Log in</button>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -17,5 +16,9 @@
     private void BeginLogOut()
     {
         Navigation.NavigateToLogout("authentication/logout");
+    }
+    private void BeginLogIn()
+    {
+        Navigation.NavigateToLogout("app");
     }
 }

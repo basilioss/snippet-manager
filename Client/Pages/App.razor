@@ -1,0 +1,94 @@
+﻿@page "/app"
+@using Microsoft.AspNetCore.Authorization;
+@inject IJSRuntime JSRuntime
+@inject ISnippetService SnippetService
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+<PageTitle>Home</PageTitle>
+
+<div style="padding: 50px; display: flex; flex-direction: column; align-items: center;">
+    <div style="display: flex; align-items: center; width: 70%; margin-bottom: 30px;">
+        <input type="text" placeholder="Search..." class="form-control mb-3" @bind="searchString" @onkeyup="HandleKeyPress" />
+        <button class="btn btn-primary" style="align-self: flex-start; margin-left: 5px;" @onclick="Search">
+            <i class="oi oi-magnifying-glass"></i>
+        </button>
+        <button class="btn btn-primary" style="align-self: flex-start; margin-left: 5px;" @onclick="CreateNewSnippet">
+            <i class="oi oi-plus"></i>
+        </button>
+    </div>
+    
+    <table class="table">
+        <tbody>
+            @foreach (var snippet in SnippetService.Snippets)
+            {
+                <tr>
+                    <td>@snippet.Title</td>
+                    <td style="text-align: right;" class="text-right">
+                        <span class="ml-2">
+                            <button class="btn btn-dark" @onclick="(() => CopyToClipboard(snippet.Id, snippet.Body))">
+                                <i id="@($"copy-icon-{snippet.Id}")" class="oi oi-document"></i>
+                            </button>
+                        </span>
+                        <span class="ml-2">
+                            <button class="btn btn-primary" @onclick="(() => EditSnippet(snippet.Id))">
+                                <i class="oi oi-pencil"></i>
+                            </button>
+                        </span>
+                        <span class="ml-2">
+                            <button class="btn btn-danger" @onclick="(() => DeleteSnippet(snippet.Id))">
+                                <i class="oi oi-trash"></i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await SnippetService.GetSnippets();
+    }
+
+    private void HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            Search();
+        }
+    }
+
+    private string searchString = "";
+
+    async void Search()
+    {
+        await SnippetService.SearchSnippets(searchString);
+        StateHasChanged(); // Trigger a re-render of the component
+    }
+
+    void EditSnippet(int id)
+    {
+        NavigationManager.NavigateTo($"snippet/{id}");
+    }
+
+    async void DeleteSnippet(int id)
+    {
+        await SnippetService.DeleteSnippet(id);
+        await SnippetService.GetSnippets();
+        StateHasChanged();
+    }
+
+    void CreateNewSnippet()
+    {
+        NavigationManager.NavigateTo("/snippet");
+    }
+
+    async Task CopyToClipboard(int snippetId, string snippetBody)
+    {
+        await JSRuntime.InvokeVoidAsync("changeCopyIconTemporary", snippetId);
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", snippetBody);
+    }
+}

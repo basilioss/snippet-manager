@@ -41,19 +41,19 @@ namespace SnippetManager.Client.Services
         public async Task CreateSnippet(Snippet snippet)
         {
             await _http.PostAsJsonAsync("api/snippet", snippet);
-            _navigationManger.NavigateTo("/");
+            _navigationManger.NavigateTo("/app");
         }
 
         public async Task DeleteSnippet(int id)
         {
             await _http.DeleteAsync($"api/snippet/{id}");
-            _navigationManger.NavigateTo("/");
+            _navigationManger.NavigateTo("/app");
         }
 
         public async Task UpdateSnippet(int id, Snippet snippet)
         {
             await _http.PutAsJsonAsync($"api/snippet/{id}", snippet);
-            _navigationManger.NavigateTo("/");
+            _navigationManger.NavigateTo("/app");
         }
     }
 }
