@@ -1,9 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+    @if (!IsIndexPage())
+    {
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+    }
 
     <main>
         <div class="top-row px-4 auth">
@@ -16,3 +19,13 @@
         </article>
     </main>
 </div>
+
+@code {
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    private bool IsIndexPage()
+    {
+        string relativeUri = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        return string.IsNullOrEmpty(relativeUri);
+    }
+}
