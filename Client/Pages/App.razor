@@ -71,7 +71,7 @@
 
     void EditSnippet(int id)
     {
-        NavigationManager.NavigateTo($"snippet/{id}");
+        NavigationManager.NavigateTo($"/app/snippet/{id}");
     }
 
     async void DeleteSnippet(int id)
@@ -83,7 +83,7 @@
 
     void CreateNewSnippet()
     {
-        NavigationManager.NavigateTo("/snippet");
+        NavigationManager.NavigateTo("/app/snippet");
     }
 
     async Task CopyToClipboard(int snippetId, string snippetBody)

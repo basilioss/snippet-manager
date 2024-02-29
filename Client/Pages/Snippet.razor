@@ -1,5 +1,5 @@
-﻿@page "/snippet"
-@page "/snippet/{id:int}"
+﻿@page "/app/snippet"
+@page "/app/snippet/{id:int}"
 @inject ISnippetService SnippetService
 @inject NavigationManager NavigationManager
 
@@ -43,7 +43,7 @@
             if (result is not null)
                 snippet = result;
             else
-                NavigationManager.NavigateTo("/snippet");
+                NavigationManager.NavigateTo("/app/snippet");
         }
     }
 
