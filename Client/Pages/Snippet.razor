@@ -1,17 +1,18 @@
 ﻿@page "/app/snippet"
 @page "/app/snippet/{id:int}"
+@using BlazorMonaco
+@using BlazorMonaco.Editor
+@using BlazorMonaco.Languages
 @inject ISnippetService SnippetService
 @inject NavigationManager NavigationManager
 
 <EditForm Model="snippet" OnSubmit="HandleSubmit">
     <div>
-        <label for="title">Title</label>
         <InputText id="title" @bind-Value="snippet.Title" class="form-control" />
     </div>
     <br/>
     <div>
-        <label for="body">Body</label>
-        <InputTextArea id="body" @bind-Value="snippet.Body" class="form-control" rows="10" />
+        <StandaloneCodeEditor @ref="editor" ConstructionOptions="EditorConstructionOptions" />
     </div>
     <br />
     <button type="submit" class="btn btn-primary">@btnText</button>
@@ -29,6 +30,25 @@
 
     SnippetManager.Shared.Snippet snippet =
         new SnippetManager.Shared.Snippet { Title = "New Snippet" };
+
+    private StandaloneCodeEditor editor;
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        this.editor = editor;
+
+        return new StandaloneEditorConstructionOptions
+            {
+                AutomaticLayout = true,
+                Language = "javascript",
+                Value = snippet.Body,
+            };
+    }
+
+    async Task HandleEditorValueChanged(string value)
+    {
+        snippet.Body = value;
+    }
 
     protected override void OnInitialized()
     {
@@ -49,6 +69,9 @@
 
     async Task HandleSubmit()
     {
+        var editedValue = await editor.GetValue();
+        snippet.Body = editedValue;
+
         if (Id is null)
         {
             await SnippetService.CreateSnippet(snippet);
@@ -61,6 +84,7 @@
 
     async Task DeleteSnippet()
     {
+        var editedValue = await editor.GetValue();
         await SnippetService.DeleteSnippet(snippet.Id);
     }
 }
