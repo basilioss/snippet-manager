@@ -14,6 +14,7 @@ builder.Services.AddHttpClient("SnippetManager.ServerAPI", client => client.Base
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("SnippetManager.ServerAPI"));
 builder.Services.AddScoped<ISnippetService, SnippetService>();
+builder.Services.AddTransient<ILanguageService, LanguageService>();
 
 builder.Services.AddApiAuthorization();
 

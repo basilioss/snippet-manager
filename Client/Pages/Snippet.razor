@@ -4,22 +4,32 @@
 @using BlazorMonaco.Editor
 @using BlazorMonaco.Languages
 @inject ISnippetService SnippetService
+@inject ILanguageService LanguageService
 @inject NavigationManager NavigationManager
 
 <EditForm Model="snippet" OnSubmit="HandleSubmit">
-    <div>
-        <InputText id="title" @bind-Value="snippet.Title" class="form-control" />
+    <div class="row" style="padding-bottom: 20px;">
+        <div class="col-md-10">
+            <InputText id="title" @bind-Value="snippet.Title" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <select id="language" class="form-control" @bind="selectedLanguage" @oninput="ChangeLanguage">
+                @foreach (var language in LanguageService.Languages)
+                {
+                    <option value="@language.Name">@language.Name</option>
+                }
+            </select>
+        </div>
     </div>
-    <br/>
-    <div>
+    <div style="border: 1px solid #ced4da; border-radius: 0.2rem;">
         <StandaloneCodeEditor @ref="editor" ConstructionOptions="EditorConstructionOptions" />
     </div>
-    <br />
-    <button type="submit" class="btn btn-primary">@btnText</button>
-    <button type="button" class="btn btn-danger"
-    @onclick="DeleteSnippet">
-        Delete Snippet
-    </button>
+    <div style="padding-top: 20px; ">
+        <button type="submit" class="btn btn-primary">@btnText</button>
+        <button type="button" class="btn btn-danger" @onclick="DeleteSnippet">
+            Delete Snippet
+        </button>
+    </div>
 </EditForm>
 
 @code {
@@ -27,32 +37,17 @@
     public int? Id { get; set; }
 
     string btnText = string.Empty;
+    string selectedLanguage = string.Empty;
 
     SnippetManager.Shared.Snippet snippet =
         new SnippetManager.Shared.Snippet { Title = "New Snippet" };
 
     private StandaloneCodeEditor editor;
 
-    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
-    {
-        this.editor = editor;
-
-        return new StandaloneEditorConstructionOptions
-            {
-                AutomaticLayout = true,
-                Language = "javascript",
-                Value = snippet.Body,
-            };
-    }
-
-    async Task HandleEditorValueChanged(string value)
-    {
-        snippet.Body = value;
-    }
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         btnText = Id == null ? "Save New Snippet" : "Update Snippet";
+        await LanguageService.GetLanguages();
     }
 
     protected override async Task OnParametersSetAsync()
@@ -61,16 +56,42 @@
         {
             var result = await SnippetService.GetSnippetById((int)Id);
             if (result is not null)
+            {
                 snippet = result;
+                selectedLanguage = LanguageService.Languages
+                    .FirstOrDefault(l => l.Id == snippet.LanguageId)?.Name ?? "plaintext";
+            }
             else
+            {
                 NavigationManager.NavigateTo("/app/snippet");
+            }
         }
+    }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        this.editor = editor;
+
+        return new StandaloneEditorConstructionOptions
+            {
+                //AutomaticLayout = true,
+                Language = selectedLanguage,
+                Value = snippet.Body,
+            };
+    }
+
+    async Task ChangeLanguage(ChangeEventArgs e)
+    {
+        selectedLanguage = e.Value.ToString();
+        await BlazorMonaco.Editor.Global.SetModelLanguage(await editor.GetModel(), selectedLanguage);
     }
 
     async Task HandleSubmit()
     {
         var editedValue = await editor.GetValue();
         snippet.Body = editedValue;
+        snippet.LanguageId = LanguageService.Languages
+            .FirstOrDefault(l => l.Name == selectedLanguage)?.Id ?? 1;
 
         if (Id is null)
         {
