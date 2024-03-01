@@ -36,11 +36,11 @@ builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddIdentityServerJwt()
-    .AddGoogle(googleOptions =>
-    {
-        googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    })
+    //.AddGoogle(googleOptions =>
+    //{
+    //    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    //    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    //})
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
