@@ -57,6 +57,7 @@ builder.Services
     });
 
 builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<ILanguageService, LanguageService>();
 builder.Services.AddScoped<ISnippetService, SnippetService>();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);

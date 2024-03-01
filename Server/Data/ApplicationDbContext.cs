@@ -45,6 +45,47 @@ namespace SnippetManager.Server.Data
             user2.PasswordHash = hasher.HashPassword(user2, "user$Pass2");
             modelBuilder.Entity<ApplicationUser>().HasData(user1, user2);
 
+            modelBuilder.Entity<Language>().HasData(
+                new Language() { Id = 1, Name = "plaintext" },
+                new Language() { Id = 2, Name = "clojure" },
+                new Language() { Id = 3, Name = "c" },
+                new Language() { Id = 4, Name = "cpp" },
+                new Language() { Id = 5, Name = "csharp" },
+                new Language() { Id = 6, Name = "css" },
+                new Language() { Id = 7, Name = "dart" },
+                new Language() { Id = 8, Name = "elixir" },
+                new Language() { Id = 9, Name = "fsharp" },
+                new Language() { Id = 10, Name = "go" },
+                new Language() { Id = 11, Name = "html" },
+                new Language() { Id = 12, Name = "java" },
+                new Language() { Id = 13, Name = "javascript" },
+                new Language() { Id = 14, Name = "julia" },
+                new Language() { Id = 15, Name = "kotlin" },
+                new Language() { Id = 16, Name = "lua" },
+                new Language() { Id = 17, Name = "markdown" },
+                new Language() { Id = 18, Name = "mysql" },
+                new Language() { Id = 19, Name = "objective-c" },
+                new Language() { Id = 20, Name = "pascal" },
+                new Language() { Id = 21, Name = "perl" },
+                new Language() { Id = 22, Name = "php" },
+                new Language() { Id = 23, Name = "powershell" },
+                new Language() { Id = 24, Name = "python" },
+                new Language() { Id = 25, Name = "r" },
+                new Language() { Id = 26, Name = "razor" },
+                new Language() { Id = 27, Name = "redis" },
+                new Language() { Id = 28, Name = "ruby" },
+                new Language() { Id = 29, Name = "rust" },
+                new Language() { Id = 30, Name = "scala" },
+                new Language() { Id = 31, Name = "shell" },
+                new Language() { Id = 32, Name = "sql" },
+                new Language() { Id = 33, Name = "swift" },
+                new Language() { Id = 34, Name = "typescript" },
+                new Language() { Id = 35, Name = "vb" },
+                new Language() { Id = 36, Name = "xml" },
+                new Language() { Id = 37, Name = "yaml" },
+                new Language() { Id = 38, Name = "json" }
+                );
+
             modelBuilder.Entity<Snippet>().HasData(
                     new Snippet
                     {
@@ -54,6 +95,7 @@ namespace SnippetManager.Server.Data
                             "  return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))\n\n" +
                             "hex_to_rgb('FFA501') # (255, 165, 1)",
                         ApplicationUserId = userId1,
+                        LanguageId = 24
                     },
                     new Snippet
                     {
@@ -65,6 +107,7 @@ namespace SnippetManager.Server.Data
                             "words('I love Python!!') # ['I', 'like', 'Python']" +
                             "words('python, javaScript & coffee') # ['python', 'javaScript', 'coffee']",
                         ApplicationUserId = userId1,
+                        LanguageId = 24
                     },
                     new Snippet
                     {
@@ -84,6 +127,7 @@ namespace SnippetManager.Server.Data
                             "  );\n\n" +
                             "escapeHTML('<a href=\"#\">Me & you</a>');",
                         ApplicationUserId = userId2,
+                        LanguageId = 13
                     },
                     new Snippet
                     {
@@ -98,10 +142,12 @@ namespace SnippetManager.Server.Data
                             "toSnakeCase('camelCase'); // 'camel_case'\n" +
                             "toSnakeCase('some text'); // 'some_text'\n",
                         ApplicationUserId = userId2,
+                        LanguageId = 13
                     });
 
         }
 
-        public DbSet<Snippet> Snippets => Set<Snippet>();
+        public DbSet<Snippet> Snippets { get; set; }
+        public DbSet<Language> Languages { get; set; }
     }
 }

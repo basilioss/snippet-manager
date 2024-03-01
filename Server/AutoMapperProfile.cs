@@ -11,6 +11,7 @@ namespace SnippetManager.Server
         {
             CreateMap<Snippet, SnippetDto>();
             CreateMap<SnippetDto, Snippet>();
+            CreateMap<Language, LanguageDto>();
         }
     }
 }
