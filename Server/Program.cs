@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting.Server;
@@ -55,6 +56,11 @@ builder.Services
 
         };
     });
+
+builder.Services.Configure<JwtBearerOptions>(IdentityServerJwtConstants.IdentityServerJwtBearerScheme, options =>
+{
+    options.Authority = "https://snippy.azurewebsites.net";
+});
 
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<ILanguageService, LanguageService>();
