@@ -26,7 +26,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddIdentityServer()
+builder.Services.AddIdentityServer(opt =>
+    {
+        opt.IssuerUri = "https://snippy.azurewebsites.net";
+    })
     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
 builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
