@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting.Server;
@@ -26,10 +25,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddIdentityServer(opt =>
-    {
-        opt.IssuerUri = "https://snippy.azurewebsites.net";
-    })
+builder.Services.AddIdentityServer()
     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
 builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
@@ -59,11 +55,6 @@ builder.Services
 
         };
     });
-
-builder.Services.Configure<JwtBearerOptions>(IdentityServerJwtConstants.IdentityServerJwtBearerScheme, options =>
-{
-    options.Authority = "https://snippy.azurewebsites.net";
-});
 
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<ILanguageService, LanguageService>();
