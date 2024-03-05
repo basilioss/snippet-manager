@@ -69,7 +69,7 @@ builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<ILanguageService, LanguageService>();
 builder.Services.AddScoped<ISnippetService, SnippetService>();
 
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.AddRouting(options => options.LowercaseUrls = false);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
