@@ -4,13 +4,14 @@
 
 <AuthorizeView>
     <Authorized>
-        <a href="authentication/profile">Hello, @context.User.Identity?.Name!</a>
-        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+        <a href="authentication/profile" class="mr-10 font-semibold text-gray-600 dark:text-gray-300">Hello, @context.User.Identity?.Name!</a>
+        <button class="font-semibold text-purple-800 dark:text-purple-400" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
-        <button class="nav-link btn btn-link" @onclick="BeginLogIn">Log in</button>
+        <button class="font-semibold text-purple-800 dark:text-purple-400" @onclick="BeginLogIn">Log in</button>
     </NotAuthorized>
 </AuthorizeView>
+
 
 @code{
     private void BeginLogOut()

@@ -7,37 +7,34 @@
 
 <PageTitle>Home</PageTitle>
 
-<div style="padding: 50px; display: flex; flex-direction: column; align-items: center;">
-    <div style="display: flex; align-items: center; width: 70%; margin-bottom: 30px;">
-        <input type="text" placeholder="Search..." class="form-control mb-3" @bind="searchString" @onkeyup="HandleKeyPress" />
-        <button class="btn btn-primary" style="align-self: flex-start; margin-left: 5px;" @onclick="Search">
-            <i class="oi oi-magnifying-glass"></i>
+<div class="flex flex-col items-center p-14">
+    <div class="mb-3 flex items-center md:w-[50%]">
+        <input class="w-full appearance-none rounded-lg border px-5 py-2 text-gray-700 shadow focus:outline-none focus:shadow-outline" placeholder="Search.." @bind="searchString" @onkeyup="HandleKeyPress">
+        <button class="ml-2 self-start rounded-lg bg-purple-500 p-2 shadow-md hover:bg-purple-800" @onclick="Search">
+            <i class="fa-solid fa-magnifying-glass w-6 text-white"></i>
         </button>
-        <button class="btn btn-primary" style="align-self: flex-start; margin-left: 5px;" @onclick="CreateNewSnippet">
-            <i class="oi oi-plus"></i>
+        <button class="ml-2 self-start rounded-lg bg-purple-500 p-2 shadow-md hover:bg-purple-800" @onclick="CreateNewSnippet">
+            <i class="fa-solid fa-plus w-6 text-white"></i>
         </button>
     </div>
-    
-    <table class="table">
+
+    <table class="table-auto border-collapse md:w-[50%]">
         <tbody>
             @foreach (var snippet in SnippetService.Snippets)
             {
-                <tr>
-                    <td>@snippet.Title</td>
-                    <td style="text-align: right;" class="text-right">
+                <tr class="border-b border-gray-200">
+                    <td class="py-2">
+                        <a class="font-semibold hover:text-purple-800" href="/app/snippet/@snippet.Id">@snippet.Title</a>
+                    </td>
+                    <td class="py-2 text-right">
                         <span class="ml-2">
-                            <button class="btn btn-dark" @onclick="(() => CopyToClipboard(snippet.Id, snippet.Body))">
-                                <i id="@($"copy-icon-{snippet.Id}")" class="oi oi-document"></i>
+                            <button class="rounded-lg border bg-transparent px-4 py-2 font-semibold text-black shadow hover:bg-purple-600 hover:text-white hover:border-transparent" @onclick="(() => CopyToClipboard(snippet.Id, snippet.Body))">
+                                <i id="@($"copy-icon-{snippet.Id}")" class="fa-regular fa-clipboard"></i>
                             </button>
                         </span>
                         <span class="ml-2">
-                            <button class="btn btn-primary" @onclick="(() => EditSnippet(snippet.Id))">
-                                <i class="oi oi-pencil"></i>
-                            </button>
-                        </span>
-                        <span class="ml-2">
-                            <button class="btn btn-danger" @onclick="(() => DeleteSnippet(snippet.Id))">
-                                <i class="oi oi-trash"></i>
+                            <button class="rounded-lg border bg-transparent px-4 py-2 font-semibold text-black shadow hover:bg-purple-600 hover:text-white hover:border-transparent" @onclick="(() => DeleteSnippet(snippet.Id))">
+                                <i class="fa-regular fa-trash-can"></i>
                             </button>
                         </span>
                     </td>
@@ -67,11 +64,6 @@
     {
         await SnippetService.SearchSnippets(searchString);
         StateHasChanged(); // Trigger a re-render of the component
-    }
-
-    void EditSnippet(int id)
-    {
-        NavigationManager.NavigateTo($"/app/snippet/{id}");
     }
 
     async void DeleteSnippet(int id)
