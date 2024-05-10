@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-h1 {
-    @apply mb-6 text-7xl font-extrabold tracking-wide;
-}
-
-p {
-    @apply mb-10 text-xl;
-}
-
 .loading-progress {
     position: relative;
     display: block;
