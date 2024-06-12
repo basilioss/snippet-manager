@@ -4,11 +4,19 @@
 
 <AuthorizeView>
     <Authorized>
-        <a href="authentication/profile" class="mr-10 font-semibold text-gray-600 dark:text-gray-300">Hello, @context.User.Identity?.Name!</a>
-        <button class="font-semibold text-purple-800 dark:text-purple-400" @onclick="BeginLogOut">Log out</button>
+        <div class="hidden md:block">
+            <!-- Hide on small screens -->
+            <a href="authentication/profile" class="mr-10 text-lg font-semibold text-gray-600">Hello, @context.User.Identity?.Name!</a>
+        </div>
+        <div class="block md:hidden">
+            <!-- Show on small screens -->
+            <a href="authentication/profile" class="mr-10 text-lg font-semibold text-gray-600">Account</a>
+        </div>
+        <button class="text-lg font-semibold text-gray-600" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
-        <button class="font-semibold text-purple-800 dark:text-purple-400" @onclick="BeginLogIn">Log in</button>
+        <a href="authentication/register" class="mr-10 text-lg font-semibold text-gray-600">Register</a>
+        <a href="app" class="text-lg font-semibold text-gray-600">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -17,9 +25,5 @@
     private void BeginLogOut()
     {
         Navigation.NavigateToLogout("authentication/logout");
-    }
-    private void BeginLogIn()
-    {
-        Navigation.NavigateToLogout("app");
     }
 }
