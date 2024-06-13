@@ -6,16 +6,16 @@
     <Authorized>
         <div class="hidden md:block">
             <!-- Hide on small screens -->
-            <a href="authentication/profile" class="mr-10 text-lg font-semibold text-gray-600">Hello, @context.User.Identity?.Name!</a>
+            <a href="authentication/profile" class="mr-4 text-lg font-semibold text-gray-600 md:mr-10">Hello, @context.User.Identity?.Name!</a>
         </div>
         <div class="block md:hidden">
             <!-- Show on small screens -->
-            <a href="authentication/profile" class="mr-10 text-lg font-semibold text-gray-600">Account</a>
+            <a href="authentication/profile" class="mr-4 text-lg font-semibold text-gray-600 md:mr-10">Account</a>
         </div>
         <button class="text-lg font-semibold text-gray-600" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/register" class="mr-10 text-lg font-semibold text-gray-600">Register</a>
+        <a href="authentication/register" class="mr-4 text-lg font-semibold text-gray-600 md:mr-10">Register</a>
         <a href="app" class="text-lg font-semibold text-gray-600">Log in</a>
     </NotAuthorized>
 </AuthorizeView>

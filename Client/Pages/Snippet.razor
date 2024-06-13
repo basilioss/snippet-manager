@@ -8,9 +8,9 @@
 @inject ILanguageService LanguageService
 @inject NavigationManager NavigationManager
 
-<div class="container mx-auto mt-8 px-20">
+<div class="container mx-auto mt-8 px-5 md:px-20">
     <EditForm Model="snippet" OnSubmit="HandleSubmit">
-        <div class="grid-cols-10 grid gap-4 pb-8">
+        <div class="grid-cols-10 grid gap-2 pb-4 md:pb-8 md:gap-4">
             <div class="col-span-8">
                 <InputText id="title" @bind-Value="snippet.Title" class="w-full rounded-lg border px-4 py-2 shadow focus:outline-none focus:shadow-outline" />
             </div>
@@ -30,16 +30,16 @@
             </div>
         </div>
 
-        <div class="mb-8 overflow-hidden rounded-lg shadow">
+        <div class="mb-4 overflow-hidden rounded-lg shadow md:mb-8">
             <StandaloneCodeEditor @ref="editor" ConstructionOptions="EditorConstructionOptions" />
         </div>
 
         <div>
             <button type="submit" class="rounded-lg border bg-white px-4 py-2 font-semibold shadow hover:bg-purple-600 hover:text-white hover:border-transparent">@btnText</button>
-            <button type="button" class="ml-4 rounded-lg border bg-white px-4 py-2 font-semibold shadow hover:bg-purple-600 hover:text-white hover:border-transparent" @onclick="DeleteSnippet">
+            <button type="button" class="ml-2 rounded-lg border bg-white px-4 py-2 font-semibold shadow hover:bg-purple-600 hover:text-white hover:border-transparent md:ml-4" @onclick="DeleteSnippet">
                 Delete
             </button>
-            <button type="button" class="ml-4 rounded-lg border bg-white px-4 py-2 font-semibold shadow hover:bg-purple-600 hover:text-white hover:border-transparent focus:outline-none focus:shadow-outline" @onclick="(() => CopyToClipboard(snippet.Id, snippet.Body))">
+            <button type="button" class="ml-2 rounded-lg border bg-white px-4 py-2 font-semibold shadow hover:bg-purple-600 hover:text-white hover:border-transparent focus:outline-none focus:shadow-outline md:ml-4" @onclick="(() => CopyToClipboard(snippet.Id, snippet.Body))">
                 Copy
             </button>
         </div>
